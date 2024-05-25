@@ -13,15 +13,18 @@ class UsersController < ApplicationController
   end
 
   def edit
+     ensure_correct_user
      @user = User.find(params[:id])
   end
 
   def update
     ensure_correct_user
     if @user.update(user_params)
-      redirect_to users_path, notice: "You have updated user successfully."
+      flash[:notice] = "You have updated user successfully."
+      redirect_to user_path(@user.id)
     else
       @books = Book.all
+      flash[:notice]
       render :edit
     end
   end
